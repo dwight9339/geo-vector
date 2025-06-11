@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: gv-workspace
+    working_dir: /workspace
+    # take ownership of the named volume, then sit idle
+    entrypoint: >
+      /bin/sh -c "chown -R 1000:1000 /workspace/node_modules &&
+                  exec sleep infinity"
+    volumes:
+      - ./:/workspace:cached                # source code
+      - workspace-node-mods:/workspace/node_modules
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/geovector
+    depends_on:
+      - postgres
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: geovector-web
+    working_dir: /workspace/web
+    entrypoint: >
+      /bin/sh -c "chown -R 1000:1000 /workspace/node_modules &&
+                  exec npm run dev"
+    volumes:
+      - ./:/workspace:cached
+      - workspace-node-mods:/workspace/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/geovector
+      NODE_ENV: development
+    depends_on:
+      - postgres
+
+volumes:
+  workspace-node-mods: {}

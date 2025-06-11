@@ -1,6 +1,7 @@
-version: '3.8'
+version: "3.8"
 
 services:
+  # --- database ---
   postgres:
     image: postgres:15
     container_name: geovector-db

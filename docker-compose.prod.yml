@@ -1,0 +1,10 @@
+# docker-compose.prod.yml
+services:
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/geovector
+    ports: ["3000:3000"]
+    depends_on: [postgres]

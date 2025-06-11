@@ -1,0 +1,44 @@
+{
+  // Human-readable name in the VS Code status bar
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainerSchema.json",
+  "name": "GeoVector Dev",
+
+  // 👇 VS Code will merge these compose files, then `up`
+  "dockerComposeFile": [
+    "../docker-compose.yml",        // base – only infra
+    "../docker-compose.dev.yml"     // dev – workspace + hot-reload web
+  ],
+
+  // The service VS Code should exec into
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
+
+  // Bring up app + db automatically
+  "runServices": [
+    "postgres",
+    "web"
+  ],
+
+  // Stop the compose stack when you close VS Code
+  "shutdownAction": "stopCompose",
+
+  // Rebuild Prisma client & install root deps the first time
+  "postCreateCommand": "pnpm install && pnpm --filter web prisma generate",
+
+  "autoForwardPorts": false,
+
+  // Helpful editor defaults inside the container
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "git.autofetch": true
+  },
+
+  // Recommended extensions installed automatically in the container
+  "extensions": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "Prisma.prisma",
+    "eamodio.gitlens",
+    "ms-azuretools.vscode-docker"
+  ]
+}
