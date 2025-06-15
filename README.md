@@ -1,4 +1,4 @@
-# 🌍 GeoVector
+# 🌍 VecGeo
 
 A structured, extensible knowledge base for GeoGuessr players — built to help you learn, reason, and guess smarter using both meta clues and place-based insight.
 
